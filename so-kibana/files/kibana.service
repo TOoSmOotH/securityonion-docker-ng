@@ -1,0 +1,10 @@
+[Unit]
+Description=Kibana
+
+[Service]
+Type=simple
+User=kibana
+ExecStart=/usr/local/bin/kibana-docker
+
+[Install]
+WantedBy=multi-user.target
