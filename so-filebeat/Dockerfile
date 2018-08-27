@@ -16,18 +16,19 @@ ENV PATH=/usr/share/filebeat:$PATH
 ADD files/docker-entrypoint /usr/local/bin
 
 # Provide a non-root user.
-RUN groupadd --gid 939 socore && \
-    useradd -M --uid 939 --gid 939 --home /usr/share/filebeat socore
+RUN groupadd --gid 931 logstash && \
+    useradd -M --uid 931 --gid 931 --home /usr/share/filebeat logstash
 
 WORKDIR /usr/share/filebeat
 RUN mkdir data logs && \
-    chown -R root:socore . && \
+    chown -R root:logstash . && \
     find /usr/share/filebeat -type d -exec chmod 0750 {} \; && \
     find /usr/share/filebeat -type f -exec chmod 0640 {} \; && \
     chmod 0750 filebeat && \
     chmod 0770 modules.d && \
-    chmod 0770 data logs
+    chmod 0770 data logs && \
+    chmod +x /usr/local/bin/docker-entrypoint
 
-USER socore
+USER logstash
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint"]
 CMD ["-e"]
