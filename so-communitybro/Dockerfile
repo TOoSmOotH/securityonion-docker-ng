@@ -13,7 +13,7 @@ RUN yum -y install jemalloc numactl libnl3 libdnet gdb GeoIP && \
     yum -y erase epel-release && yum clean all && rm -rf /var/cache/yum
 
 # Install the Bro package
-RUN rpm -i https://github.com/Security-Onion-Solutions/securityonion-docker-rpm/releases/download/securityonion-bro-2.5.4.0.rpm/securityonion-bro-2.5.4.0.rpm
+RUN rpm -i https://github.com/Security-Onion-Solutions/securityonion-docker-rpm/releases/download/CommunityBro_1.0.0.2/securityonion-communitybro-1.0.0.2.rpm
 
 VOLUME ["/nsm/bro/logs", "/nsm/bro/spool", "/opt/bro/share/bro", "/opt/bro/etc/"]
 
