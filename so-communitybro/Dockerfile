@@ -9,7 +9,7 @@ RUN yum update -y && \
 
 # Install epel
 RUN yum -y install epel-release bash libpcap iproute && yum clean all
-RUN yum -y install jemalloc numactl libnl3 libdnet gdb GeoIP && \
+RUN yum -y install jemalloc numactl libnl3 libdnet gdb GeoIP luajit && \
     yum -y erase epel-release && yum clean all && rm -rf /var/cache/yum
 
 # Install the Bro package
