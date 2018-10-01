@@ -1,8 +1,8 @@
 FROM centos:7
 
 LABEL maintainer "Security Onion Solutions, LLC"
-LABEL version="Bro 2.5.4"
-LABEL description="Bro 2.5.4 running in a docker for use with Security Onion."
+LABEL version="Community Bro 1.0.0"
+LABEL description="Community Bro 1.0.0 running in a docker for use with Security Onion."
 
 RUN yum update -y && \
     yum clean all
