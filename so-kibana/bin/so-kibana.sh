@@ -22,9 +22,6 @@ if [ "$ELASTICSEARCH_CONNECTED" == "no" ]; then
   exit
 fi
 
-# Start the Service
-/usr/local/bin/kibana-docker &
-
 # KIBANA_VERSION in /etc/nsm/securityonion.conf may not actually reflect the current Kibana version
 	# Two possible cases:
 	# 1. In the case of a new installation, KIBANA_VERSION is explicitly set to "UNKNOWN"
@@ -52,17 +49,21 @@ wait_step=0
   curl -s -XPOST http://localhost:5601/api/saved_objects/config/$KIBANA_VERSION \
       -H "Content-Type: application/json" \
       -H "kbn-xsrf: $KIBANA_VERSION" \
-      -d@$SRC/kibana/config/config.json
+      -d@/usr/share/kibana/config/config.json
   echo
 
   # Apply cross cluster search seed info for local Elasticsearch instance
-  HOSTNAME=$(hostname)
-  echo
-  echo "Applying cross cluster search config..."
-  curl -s -XPUT http://${ELASTICSEARCH_HOST}:${ELASTICSEARCH_PORT}/_cluster/settings \
-       -H 'Content-Type: application/json' \
-       -d "{\"persistent\": {\"search\": {\"remote\": {\"$HOSTNAME\": {\"seeds\": [\"127.0.0.1:9300\"]}}}}}"
-  echo
+  if [ ! -f /usr/share/kibana/config/ccseed.txt ]; then
+
+    echo
+    echo "Applying cross cluster search config..."
+    curl -s -XPUT http://${ELASTICSEARCH_HOST}:${ELASTICSEARCH_PORT}/_cluster/settings \
+         -H 'Content-Type: application/json' \
+         -d "{\"persistent\": {\"search\": {\"remote\": {\"$MASTER\": {\"seeds\": [\"127.0.0.1:9300\"]}}}}}"
+    echo
+    touch /usr/share/kibana/config/ccseed.txt
+
+  fi
 
   # Apply Kibana template
   echo
@@ -89,5 +90,7 @@ for i in /usr/share/kibana/custdashboards/*.json; do
 	curl -XPOST localhost:5601/api/kibana/dashboards/import?force=true -H 'kbn-xsrf:true' -H 'Content-type:application/json' -d @$i >> /var/log/kibana/dashboards.log 2>&1 &
 	echo -n "."
 done
+
+/usr/local/bin/kibana-docker &
 
 sleep infinity
