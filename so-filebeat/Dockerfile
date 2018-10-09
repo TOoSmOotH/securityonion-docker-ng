@@ -14,6 +14,7 @@ ENV PATH=/usr/share/filebeat:$PATH
 
 # Add entrypoint wrapper script
 ADD files/docker-entrypoint /usr/local/bin
+RUN chmod 755 /usr/local/bin/docker-entrypoint
 
 # Provide a non-root user.
 RUN groupadd --gid 939 socore && \
