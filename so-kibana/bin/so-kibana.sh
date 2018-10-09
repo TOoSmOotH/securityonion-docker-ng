@@ -59,7 +59,7 @@ wait_step=0
     echo "Applying cross cluster search config..."
     curl -s -XPUT http://${ELASTICSEARCH_HOST}:${ELASTICSEARCH_PORT}/_cluster/settings \
          -H 'Content-Type: application/json' \
-         -d "{\"persistent\": {\"search\": {\"remote\": {\"$MASTER\": {\"seeds\": [\"127.0.0.1:9300\"]}}}}}"
+         -d "{\"persistent\": {\"search\": {\"remote\": {\"$MASTER\": {\"seeds\": [\"$ELASTICSEARCH_HOST:9300\"]}}}}}"
     echo
     touch /usr/share/kibana/config/ccseed.txt
 
