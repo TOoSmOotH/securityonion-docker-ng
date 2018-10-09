@@ -26,10 +26,6 @@ ADD config/kibana.yml /usr/share/kibana/config/
 # variables and translate them to Kibana CLI options.
 ADD bin/kibana-docker /usr/local/bin/
 
-# Add our custom Security Onion links to Kibana
-ADD bin/so-kibana-add-links /usr/local/bin/
-RUN /usr/local/bin/so-kibana-add-links
-
 # Add our custom Security Onion Entry Script
 ADD bin/so-kibana.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/so-kibana.sh
@@ -51,7 +47,6 @@ RUN groupadd --gid 932 kibana && \
 # This causes Kibana to fail on startup.
 # Set ownership to kibana:kibana.
 RUN chown --recursive kibana:kibana /usr/share/kibana/*
-ADD files/kibana.service /etc/systemd/system/
 
 ## Switch to limited user and run process.
 USER kibana
