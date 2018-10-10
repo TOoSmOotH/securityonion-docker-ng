@@ -50,4 +50,4 @@ USER kibana
 #CMD /usr/local/bin/kibana-docker
 
 #ENTRYPOINT ["/usr/local/bin/so-kibana.sh"]
-ENTRYPOINT ["/bin/bash"]
+ENTRYPOINT ["/bin/bash sleep infinity"]
