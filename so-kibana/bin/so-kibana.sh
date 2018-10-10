@@ -22,6 +22,8 @@ if [ "$ELASTICSEARCH_CONNECTED" == "no" ]; then
   exit
 fi
 
+/usr/local/bin/kibana-docker &
+
 # KIBANA_VERSION in /etc/nsm/securityonion.conf may not actually reflect the current Kibana version
 	# Two possible cases:
 	# 1. In the case of a new installation, KIBANA_VERSION is explicitly set to "UNKNOWN"
@@ -90,7 +92,5 @@ for i in /usr/share/kibana/custdashboards/*.json; do
 	curl -XPOST localhost:5601/api/kibana/dashboards/import?force=true -H 'kbn-xsrf:true' -H 'Content-type:application/json' -d @$i >> /var/log/kibana/dashboards.log 2>&1 &
 	echo -n "."
 done
-
-/usr/local/bin/kibana-docker &
 
 sleep infinity
