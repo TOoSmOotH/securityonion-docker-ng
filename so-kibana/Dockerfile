@@ -19,9 +19,6 @@ RUN curl -Ls https://artifacts.elastic.co/downloads/kibana/kibana-oss-6.4.1-linu
 
 ENV PATH=/usr/share/kibana/bin:$PATH
 
-# Set some Kibana configuration defaults.
-ADD config/kibana.yml /usr/share/kibana/config/
-
 # Add the launcher/wrapper script. It knows how to interpret environment
 # variables and translate them to Kibana CLI options.
 ADD bin/kibana-docker /usr/local/bin/
