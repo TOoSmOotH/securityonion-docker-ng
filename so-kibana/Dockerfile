@@ -49,5 +49,4 @@ RUN chown --recursive kibana:kibana /usr/share/kibana/*
 USER kibana
 #CMD /usr/local/bin/kibana-docker
 
-#ENTRYPOINT ["/usr/local/bin/so-kibana.sh"]
-ENTRYPOINT ["/usr/bin/top && sleep infinity"]
+ENTRYPOINT ["/usr/local/bin/so-kibana.sh >> /var/log/kibana/startup.log"]
