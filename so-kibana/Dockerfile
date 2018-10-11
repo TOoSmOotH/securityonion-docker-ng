@@ -48,5 +48,5 @@ RUN chown --recursive kibana:kibana /usr/share/kibana/*
 ## Switch to limited user and run process.
 USER kibana
 #CMD /usr/local/bin/kibana-docker
-
+RUN mkdir -p /var/log/kibana
 ENTRYPOINT ["/usr/local/bin/so-kibana.sh >> /var/log/kibana/startup.log"]
