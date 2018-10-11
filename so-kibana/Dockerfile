@@ -44,9 +44,9 @@ RUN groupadd --gid 932 kibana && \
 # This causes Kibana to fail on startup.
 # Set ownership to kibana:kibana.
 RUN chown --recursive kibana:kibana /usr/share/kibana/*
-
+RUN mkdir -p /var/log/kibana && chown kibana:kibana /var/log/kibana
 ## Switch to limited user and run process.
 USER kibana
 #CMD /usr/local/bin/kibana-docker
-RUN mkdir -p /var/log/kibana
+
 ENTRYPOINT ["/usr/local/bin/so-kibana.sh >> /var/log/kibana/startup.log"]
