@@ -1,3 +1,5 @@
+#!/bin/bash
+
 /usr/local/bin/kibana-docker &
 
 KIBANA_VERSION=6.4.1
