@@ -5,30 +5,6 @@
 KIBANA_VERSION=6.4.1
 MAX_WAIT=240
 
-# Wait for ElasticSearch to come up, so that we can query for version infromation
-echo -n "Waiting for ElasticSearch..."
-COUNT=0
-ELASTICSEARCH_CONNECTED="no"
-while [[ "$COUNT" -le 240 ]]; do
-  curl --output /dev/null --silent --head --fail http://$ELASTICSEARCH_HOST:9200
-  if [ $? -eq 0 ]; then
-    ELASTICSEARCH_CONNECTED="yes"
-    echo "connected!"
-    break
-  else
-    ((COUNT+=1))
-    sleep 1
-    echo -n "."
-  fi
-done
-if [ "$ELASTICSEARCH_CONNECTED" == "no" ]; then
-  echo
-  echo -e "Connection attempt timed out.  Unable to connect to ElasticSearch.  \nPlease try: \n  -checking log(s) in /var/log/elasticsearch/\n  -running 'sudo docker ps' \n  -running 'sudo so-elastic-restart'"
-  echo
-
-  exit
-fi
-
 # Check to see if Kibana is available
 wait_step=0
   until curl -s -XGET http://localhost:5601 > /dev/null ; do
@@ -40,6 +16,16 @@ wait_step=0
 	  fi
 		  sleep 1s;
   done
+
+# This is junky but create the index if Kibana decides its not in the mood
+  curl -s -X GET "localhost:9200/_cat/indices?v" | grep 'kibana' &> /dev/null
+
+  if [[ $? != 0 ]]; then
+      echo "Kibana Index Isn't There. Let's add it"
+      curl -XPUT $ELASTICSEARCH_HOST:9200/.kibana
+  else
+      echo "Kibana Index is there... Next."
+  fi
 
   # Apply Kibana config
   echo
