@@ -10,6 +10,30 @@
 # will cause Kibana to be invoked with:
 #
 #       --elasticsearch.startupTimeout=60
+# Wait for ElasticSearch to come up, so that we can query for version infromation
+echo -n "Waiting for ElasticSearch..."
+COUNT=0
+ELASTICSEARCH_CONNECTED="no"
+while [[ "$COUNT" -le 240 ]]; do
+  curl --output /dev/null --silent --head --fail http://$ELASTICSEARCH_HOST:9200
+  if [ $? -eq 0 ]; then
+    ELASTICSEARCH_CONNECTED="yes"
+    echo "connected!"
+    break
+  else
+    ((COUNT+=1))
+    sleep 1
+    echo -n "."
+  fi
+done
+if [ "$ELASTICSEARCH_CONNECTED" == "no" ]; then
+  echo
+  echo -e "Connection attempt timed out.  Unable to connect to ElasticSearch.  \nPlease try: \n  -checking log(s) in /var/log/elasticsearch/\n  -running 'sudo docker ps' \n  -running 'sudo so-elastic-restart'"
+  echo
+
+  exit
+fi
+
 
 kibana_vars=(
     console.enabled
@@ -135,4 +159,4 @@ done
 # Therefore, we set this value here so that cgroup statistics are
 # available for the container this process will run in.
 
-/usr/share/kibana/bin/kibana --cpu.cgroup.path.override=/ --cpuacct.cgroup.path.override=/ ${longopts}
+exec /usr/share/kibana/bin/kibana --cpu.cgroup.path.override=/ --cpuacct.cgroup.path.override=/ ${longopts}
