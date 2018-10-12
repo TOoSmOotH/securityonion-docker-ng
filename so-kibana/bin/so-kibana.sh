@@ -18,23 +18,23 @@ wait_step=0
   done
 
 # This is junky but create the index if Kibana decides its not in the mood
-  curl -s -X GET "localhost:9200/_cat/indices?v" | grep 'kibana' &> /dev/null
+curl -s -X GET "$ELASTICSEARCH_HOST:9200/_cat/indices?v" | grep 'kibana' &> /dev/null
 
-  if [[ $? != 0 ]]; then
-      echo "Kibana Index Isn't There. Let's add it"
-      curl -XPUT $ELASTICSEARCH_HOST:9200/.kibana
-  else
-      echo "Kibana Index is there... Next."
-  fi
+if [[ $? != 0 ]]; then
+    echo "Kibana Index Isn't There. Let's add it"
+    curl -XPUT $ELASTICSEARCH_HOST:9200/.kibana
+else
+    echo "Kibana Index is there... Next."
+fi
 
-  # Apply Kibana config
-  echo
-  echo "Applying Kibana config..."
-  curl -s -XPOST http://localhost:5601/api/saved_objects/config/$KIBANA_VERSION \
-      -H "Content-Type: application/json" \
-      -H "kbn-xsrf: $KIBANA_VERSION" \
-      -d@/usr/share/kibana/config/config.json
-  echo
+# Apply Kibana config
+echo
+echo "Applying Kibana config..."
+curl -s -XPOST http://localhost:5601/api/saved_objects/config/$KIBANA_VERSION \
+    -H "Content-Type: application/json" \
+    -H "kbn-xsrf: $KIBANA_VERSION" \
+    -d@/usr/share/kibana/config/config.json
+echo
 
 # Apply all the dashboards
 # Load dashboards, visualizations, index pattern(s), etc.
