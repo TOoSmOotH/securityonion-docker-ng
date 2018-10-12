@@ -19,14 +19,6 @@ RUN curl -Ls https://artifacts.elastic.co/downloads/kibana/kibana-oss-6.4.1-linu
 
 ENV PATH=/usr/share/kibana/bin:$PATH
 
-# Add the launcher/wrapper script. It knows how to interpret environment
-# variables and translate them to Kibana CLI options.
-ADD bin/kibana-docker /usr/local/bin/
-
-# Add our custom Security Onion Entry Script
-ADD bin/so-kibana.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/so-kibana.sh
-
 # Copy over the dashboards
 RUN mkdir /usr/share/kibana/dashboards
 ADD dashboards/* /usr/share/kibana/dashboards/
@@ -40,13 +32,21 @@ RUN groupadd --gid 932 kibana && \
       --home-dir /usr/share/kibana --no-create-home \
       kibana
 
+# Add the launcher/wrapper script. It knows how to interpret environment
+# variables and translate them to Kibana CLI options.
+ADD bin/kibana-docker /usr/local/bin/
+
+# Add our custom Security Onion Entry Script
+ADD bin/so-kibana.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/so-kibana.sh
+
 # Files are owned by 1000:1000 by default.
 # This causes Kibana to fail on startup.
 # Set ownership to kibana:kibana.
 RUN chown --recursive kibana:kibana /usr/share/kibana/*
 ## Switch to limited user and run process.
 USER kibana
-CMD /usr/local/bin/kibana-docker
+#CMD /usr/local/bin/kibana-docker
 
-#ENTRYPOINT ["/usr/local/bin/so-kibana.sh"]
+ENTRYPOINT ["/usr/local/bin/so-kibana.sh"]
 #ENTRYPOINT ["/bin/bash"]
