@@ -33,6 +33,7 @@ if [ "$ELASTICSEARCH_CONNECTED" == "no" ]; then
 
   exit
 fi
+curl -XPUT $ELASTICSEARCH_HOST:9200/blah
 
 
 kibana_vars=(

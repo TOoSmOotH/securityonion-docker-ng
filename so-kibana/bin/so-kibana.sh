@@ -18,14 +18,14 @@ wait_step=0
   done
 
 # This is junky but create the index if Kibana decides its not in the mood
-curl -s -X GET "$ELASTICSEARCH_HOST:9200/_cat/indices?v" | grep 'kibana' &> /dev/null
+#curl -s -X GET "$ELASTICSEARCH_HOST:9200/_cat/indices?v" | grep 'kibana' &> /dev/null
 
-if [[ $? != 0 ]]; then
-    echo "Kibana Index Isn't There. Let's add it"
+#if [[ $? != 0 ]]; then
+#    echo "Kibana Index Isn't There. Let's add it"
     curl -XPUT $ELASTICSEARCH_HOST:9200/.kibana
-else
-    echo "Kibana Index is there... Next."
-fi
+#else
+#    echo "Kibana Index is there... Next."
+#fi
 
 # Apply Kibana config
 echo
