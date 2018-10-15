@@ -22,10 +22,23 @@ wait_step=0
 
 #if [[ $? != 0 ]]; then
 #    echo "Kibana Index Isn't There. Let's add it"
-    curl -XPUT $ELASTICSEARCH_HOST:9200/.kibana
+#    curl -XPUT $ELASTICSEARCH_HOST:9200/.kibana
 #else
 #    echo "Kibana Index is there... Next."
 #fi
+
+# Apply Kibana template
+  echo
+  echo "Applying Kibana template..."
+  curl -s -XPUT http://$ELASTICSEARCH_HOST:9200/_template/kibana \
+       -H 'Content-Type: application/json' \
+       -d'{"index_patterns" : ".kibana", "settings": { "number_of_shards" : 1, "number_of_replicas" : 0 }, "mappings" : { "search": {"properties": {"hits": {"type": "integer"}, "version": {"type": "integer"}}}}}'
+  echo
+
+  curl -s -XPUT "$ELASTICSEARCH_HOST:9200/.kibana/_settings" \
+       -H 'Content-Type: application/json' \
+       -d'{"index" : {"number_of_replicas" : 0}}'
+  echo
 
 # Apply Kibana config
 echo
@@ -47,5 +60,7 @@ for i in /usr/share/kibana/custdashboards/*.json; do
 	curl -XPOST localhost:5601/api/kibana/dashboards/import?force=true -H 'kbn-xsrf:true' -H 'Content-type:application/json' -d @$i >> /var/log/kibana/dashboards.log 2>&1 &
 	echo -n "."
 done
+
+
 
 sleep infinity
