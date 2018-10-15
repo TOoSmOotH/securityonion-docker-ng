@@ -48,5 +48,5 @@ RUN chown --recursive kibana:kibana /usr/share/kibana/*
 USER kibana
 #CMD /usr/local/bin/kibana-docker
 
-#ENTRYPOINT ["/usr/local/bin/so-kibana.sh"]
+ENTRYPOINT ["/usr/local/bin/so-kibana.sh"]
 #ENTRYPOINT ["/bin/bash"]
