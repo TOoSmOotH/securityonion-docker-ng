@@ -27,6 +27,15 @@ wait_step=0
 #    echo "Kibana Index is there... Next."
 #fi
 
+# Apply Kibana config
+echo
+echo "Applying Kibana config..."
+curl -s -XPOST http://localhost:5601/api/saved_objects/config/$KIBANA_VERSION \
+    -H "Content-Type: application/json" \
+    -H "kbn-xsrf: $KIBANA_VERSION" \
+    -d@/usr/share/kibana/config/config.json
+echo
+
 # Apply Kibana template
   echo
   echo "Applying Kibana template..."
@@ -39,15 +48,6 @@ wait_step=0
        -H 'Content-Type: application/json' \
        -d'{"index" : {"number_of_replicas" : 0}}'
   echo
-
-# Apply Kibana config
-echo
-echo "Applying Kibana config..."
-curl -s -XPOST http://localhost:5601/api/saved_objects/config/$KIBANA_VERSION \
-    -H "Content-Type: application/json" \
-    -H "kbn-xsrf: $KIBANA_VERSION" \
-    -d@/usr/share/kibana/config/config.json
-echo
 
 # Apply all the dashboards
 # Load dashboards, visualizations, index pattern(s), etc.
