@@ -1,5 +1,5 @@
 #!/bin/bash
-
+sleep 30
 set -euo pipefail
 
 # Check if the the user has invoked the image with flags.
