@@ -18,7 +18,7 @@ while [[ "$COUNT" -le 240 ]]; do
   curl --output /dev/null --silent --head --fail http://$ELASTICSEARCH_HOST:9200
   if [ $? -eq 0 ]; then
     ELASTICSEARCH_CONNECTED="yes"
-    echo "connected!"
+    echo "connected to $ELASTICSEARCH_HOST !" >> /var/log/kibana/esstartup.log
     break
   else
     ((COUNT+=1))
@@ -28,7 +28,7 @@ while [[ "$COUNT" -le 240 ]]; do
 done
 if [ "$ELASTICSEARCH_CONNECTED" == "no" ]; then
   echo
-  echo -e "Connection attempt timed out.  Unable to connect to ElasticSearch.  \nPlease try: \n  -checking log(s) in /var/log/elasticsearch/\n  -running 'sudo docker ps' \n  -running 'sudo so-elastic-restart'"
+  echo -e "Connection attempt timed out.  Unable to connect to ElasticSearch.  \nPlease try: \n  -checking log(s) in /var/log/elasticsearch/\n  -running 'sudo docker ps' \n  -running 'sudo so-elastic-restart'" >> /var/log/kibana/esstartup.log
   echo
 
   exit
