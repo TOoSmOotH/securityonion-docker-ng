@@ -3,7 +3,7 @@
 /usr/local/bin/kibana-docker &
 
 KIBANA_VERSION=6.4.1
-MAX_WAIT=240
+MAX_WAIT=40
 
 # Check to see if Kibana is available
 wait_step=0
