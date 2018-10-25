@@ -1,6 +1,7 @@
 FROM ubuntu:bionic-20180526
 
-LABEL maintainer="sameer@damagehead.com"
+#LABEL maintainer="sameer@damagehead.com"
+LABEL maintainer="mike.reeves@securityonionsolutions.com"
 
 ENV APT_CACHER_NG_VERSION=3.1 \
     APT_CACHER_NG_CACHE_DIR=/var/cache/apt-cacher-ng \
@@ -15,7 +16,7 @@ RUN apt-get update \
  && rm -rf /var/lib/apt/lists/*
 
  # Create socore user.
- RUN groupadd --gid 939 socore && \
+ RUN addgroup --gid 939 socore && \
      adduser --uid 939 --gid 939 \
      --home-dir /opt/so --no-create-home socore
 
