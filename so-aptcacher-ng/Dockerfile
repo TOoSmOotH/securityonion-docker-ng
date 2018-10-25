@@ -22,7 +22,7 @@ RUN apt-get update \
 
 COPY files/so-entrypoint.sh /sbin/so-entrypoint.sh
 
-RUN chmod 755 /sbin/so-entrypoint.sh
+RUN chmod 755 /sbin/so-entrypoint.sh && chown -R 939:939 /etc/apt-cacher-ng
 
 EXPOSE 3142/tcp
 
