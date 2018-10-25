@@ -18,7 +18,7 @@ RUN apt-get update \
  # Create socore user.
  RUN addgroup --gid 939 socore && \
      adduser --uid 939 --gid 939 \
-     --home-dir /opt/so --no-create-home socore
+     --home /opt/so --no-create-home socore
 
 COPY files/so-entrypoint.sh /sbin/so-entrypoint.sh
 
