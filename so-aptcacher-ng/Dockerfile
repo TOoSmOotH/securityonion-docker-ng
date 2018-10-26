@@ -19,7 +19,7 @@ RUN apt-get update \
      --home /opt/so --no-create-home socore
 
 COPY files/so-entrypoint.sh /sbin/so-entrypoint.sh
-COPY repos/* /etc/apt-cacher-ng
+COPY repos/* /etc/apt-cacher-ng/
 
 RUN chmod 755 /sbin/so-entrypoint.sh && chown -R 939:939 /etc/apt-cacher-ng
 RUN ln -sf /dev/stdout /var/log/apt-cacher-ng/apt-cacher.log; \
