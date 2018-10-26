@@ -11,8 +11,6 @@ ENV APT_CACHER_NG_VERSION=3.1 \
 RUN apt-get update \
  && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
       apt-cacher-ng=${APT_CACHER_NG_VERSION}* \
- && sed 's/# ForeGround: 0/ForeGround: 1/' -i /etc/apt-cacher-ng/acng.conf \
- && sed 's/# PassThroughPattern:.*this would allow.*/PassThroughPattern: .* #/' -i /etc/apt-cacher-ng/acng.conf \
  && rm -rf /var/lib/apt/lists/*
 
  # Create socore user.
@@ -21,8 +19,11 @@ RUN apt-get update \
      --home /opt/so --no-create-home socore
 
 COPY files/so-entrypoint.sh /sbin/so-entrypoint.sh
+COPY repos/* /etc/apt-cacher-ng
 
 RUN chmod 755 /sbin/so-entrypoint.sh && chown -R 939:939 /etc/apt-cacher-ng
+RUN ln -sf /dev/stdout /var/log/apt-cacher-ng/apt-cacher.log; \
+    ln -sf /dev/stderr /var/log/apt-cacher-ng/apt-cacher.err; \
 
 EXPOSE 3142/tcp
 
