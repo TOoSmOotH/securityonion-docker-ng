@@ -26,9 +26,9 @@ RUN yum update -y && yum -y install rsync epel-release &&\
 RUN mkdir -p /opt/socore/bin
 RUN mkdir -p /opt/socore/html
 
-COPY bin/* /opt/socore/bin/
+#COPY bin/* /opt/socore/bin/
 
-COPY files/startso.sh /opt/socore/
+#COPY files/startso.sh /opt/socore/
 COPY files/html/* /opt/socore/html/
 
 RUN chmod +x /opt/socore/startso.sh

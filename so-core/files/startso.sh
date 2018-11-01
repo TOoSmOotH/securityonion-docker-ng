@@ -1,8 +1,8 @@
 #!/bin/bash
 
 echo
-echo "Syncing base files with the host OS"
-rsync --update -raz /opt/socore/ /opt/so
+#echo "Syncing base files with the host OS"
+#rsync --update -raz /opt/socore/ /opt/so
 
 echo
 echo "Running Security Onion"
