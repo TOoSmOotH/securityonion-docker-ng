@@ -1,7 +1,7 @@
 #!/bin/bash
 
 for confs in $(grep -v '#' /usr/share/logstash/conf.enabled.txt); do
-  ln -s $confs /usr/share/logstash/pipeline.enabled/$(basename $confs)
+  ln -fs $confs /usr/share/logstash/pipeline.enabled/$(basename $confs)
 done
 
 if [[ -z $1 ]] || [[ ${1:0:1} == '-' ]] ; then
